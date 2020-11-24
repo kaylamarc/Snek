@@ -1,0 +1,3 @@
+# ignore Eclipse generated files
+/bin/
+/.settings/
