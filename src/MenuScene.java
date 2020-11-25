@@ -66,9 +66,6 @@ public class MenuScene extends Scene {
 			if(mouseListener.isPressed()) {
 				Window.getWindow().close();
 			}
-			else {
-				
-			}
 		} else {
 			exitCurrentImage = exit;
 		}

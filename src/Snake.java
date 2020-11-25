@@ -41,6 +41,12 @@ public class Snake {
 			waitTimeLeft -= dt;
 			return;
 		}
+		
+		// if intersect with self return to main window
+		if(intersectingWithSelf()) {
+			Window.getWindow().changeState(0);
+		}
+		
 		waitTimeLeft = ogWaitBtwnUpdates;
 
 		double newX = 0;
@@ -69,7 +75,30 @@ public class Snake {
 
 		body[head].x = newX;
 		body[head].y = newY;
-
+		
+	}
+	
+	/**
+	 * determines whether or not head is intersecting with a body piece
+	 * @return boolean
+	 */
+	public boolean intersectingWithSelf() {
+		Rect headRec = body[head];
+		for (int i = tail; i != head; i = (i + 1) % body.length) {
+			if(intersecting(headRec, body[i])) return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * determines whether two rectangeles are intersecting
+	 * @param r1
+	 * @param r2
+	 * @return boolean
+	 */
+	public boolean intersecting(Rect r1, Rect r2) {
+		return (r1.x >= r2.x && r1.x + r1.width >= r2.x + r2.width &&
+				r1.y >= r2.y && r1.y + r1.height <= r2.y + r2.height);
 	}
 
 	// changes snake direction
