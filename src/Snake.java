@@ -84,8 +84,17 @@ public class Snake {
 	 */
 	public boolean intersectingWithSelf() {
 		Rect headRec = body[head];
+		return intersectingWithRect(headRec);
+	}
+	
+	/**
+	 * checks if snake head is intersects with a rectangle
+	 * @param rect
+	 * @return
+	 */
+	public boolean intersectingWithRect(Rect rect) {
 		for (int i = tail; i != head; i = (i + 1) % body.length) {
-			if(intersecting(headRec, body[i])) return true;
+			if(intersecting(rect, body[i])) return true;
 		}
 		return false;
 	}
@@ -100,7 +109,11 @@ public class Snake {
 		return (r1.x >= r2.x && r1.x + r1.width >= r2.x + r2.width &&
 				r1.y >= r2.y && r1.y + r1.height <= r2.y + r2.height);
 	}
-
+	
+	public void grow() {
+		System.out.println("growing");
+	}
+	
 	// changes snake direction
 	public void changeDirection(Direction newDirection) {
 		// check user input; make sure they don't run into themselves
