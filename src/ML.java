@@ -15,7 +15,7 @@ public class ML extends MouseAdapter implements MouseMotionListener {
 		isPressed = true;
 	}
 	
-	public void MouseReleased(MouseEvent e) {
+	public void mouseReleased(MouseEvent e) {
 		isPressed = false;
 	}
 	
