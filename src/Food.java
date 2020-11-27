@@ -47,7 +47,7 @@ public class Food {
 	 */
 	public void update(double dt) {
 		if(snake.intersectingWithRect(this.rect)) {
-			snake.grow();
+			snake.grow(color);
 			this.rect.x = -100;
 			this.rect.y = -100;
 			isSpawned = false;

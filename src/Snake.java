@@ -17,6 +17,8 @@ public class Snake {
 
 	public double ogWaitBtwnUpdates = 0.3f; // how long it waits before each piece moves
 	public double waitTimeLeft = ogWaitBtwnUpdates; // how much time before moving again
+	
+	public Color[] bodyColor = new Color[100]; // keeps track of body piece colors
 
 	public Snake(int size, double startX, double startY, double bodyWidth, double bodyHeight, Rect background) {
 		this.size = size;
@@ -31,6 +33,10 @@ public class Snake {
 			head++;
 		}
 		head--;
+		
+		for (int i = 0; i < 100; i++) {
+			bodyColor[i] = Color.WHITE;
+		}
 	}
 
 	/**
@@ -106,7 +112,7 @@ public class Snake {
 	}
 
 	/**
-	 * determines whether two rectangeles are intersecting
+	 * determines whether two rectangles are intersecting
 	 * 
 	 * @param r1
 	 * @param r2
@@ -126,7 +132,8 @@ public class Snake {
 	 * grow the snake when food eaten append new rectangle to tail in direction
 	 * moving
 	 */
-	public void grow() {
+	public void grow(Color color) {
+		size++;
 		double newX = 0;
 		double newY = 0;
 
@@ -148,6 +155,7 @@ public class Snake {
 		Rect newBodyPiece = new Rect(newX, newY, bodyWidth, bodyHeight);
 
 		tail = (tail - 1) % body.length;
+		bodyColor[size-1] = color;
 		body[tail] = newBodyPiece;
 	}
 
@@ -173,15 +181,15 @@ public class Snake {
 	public void draw(Graphics2D g2) {
 
 		// get the wrap around effect of snake
-		for (int i = tail; i != head; i = (i + 1) % body.length) {
+		for (int i = tail, ci = size-1; i != head; i = (i + 1) % body.length, ci--) {
 			Rect piece = body[i];
-
+			
 			// 3 pixel gap between the body pieces
 			double subWidth = (piece.width - 6.0) / 2.0;
 			double subHeight = (piece.height - 6.0) / 2.0;
 
 			// color of snake
-			g2.setColor(Color.WHITE);
+			g2.setColor(bodyColor[ci]);
 
 			// 4 little rectangles per body piece
 			g2.fill(new Rectangle2D.Double(piece.x + 2.0, piece.y + 2.0, subWidth, subHeight));
