@@ -13,13 +13,16 @@ public class Snake {
 
 	public Direction direction = Direction.RIGHT;
 
-	public double ogWaitBtwnUpdates = 0.8f; // how long it waits before each piece moves
+	public Rect background;
+
+	public double ogWaitBtwnUpdates = 0.3f; // how long it waits before each piece moves
 	public double waitTimeLeft = ogWaitBtwnUpdates; // how much time before moving again
 
-	public Snake(int size, double startX, double startY, double bodyWidth, double bodyHeight) {
+	public Snake(int size, double startX, double startY, double bodyWidth, double bodyHeight, Rect background) {
 		this.size = size;
 		this.bodyWidth = bodyWidth;
 		this.bodyHeight = bodyHeight;
+		this.background = background;
 
 		// create each body piece
 		for (int i = 0; i <= size; i++) {
@@ -41,12 +44,12 @@ public class Snake {
 			waitTimeLeft -= dt;
 			return;
 		}
-		
+
 		// if intersect with self return to main window
-		if(intersectingWithSelf()) {
+		if (intersectingWithSelf()) {
 			Window.getWindow().changeState(0);
 		}
-		
+
 		waitTimeLeft = ogWaitBtwnUpdates;
 
 		double newX = 0;
@@ -75,45 +78,79 @@ public class Snake {
 
 		body[head].x = newX;
 		body[head].y = newY;
-		
+
 	}
-	
+
 	/**
 	 * determines whether or not head is intersecting with a body piece
+	 * 
 	 * @return boolean
 	 */
 	public boolean intersectingWithSelf() {
 		Rect headRec = body[head];
-		return intersectingWithRect(headRec);
+		return intersectingWithRect(headRec) || intersectingWithBoundary(headRec);
 	}
-	
+
 	/**
 	 * checks if snake head is intersects with a rectangle
+	 * 
 	 * @param rect
 	 * @return
 	 */
 	public boolean intersectingWithRect(Rect rect) {
 		for (int i = tail; i != head; i = (i + 1) % body.length) {
-			if(intersecting(rect, body[i])) return true;
+			if (intersecting(rect, body[i]))
+				return true;
 		}
 		return false;
 	}
-	
+
 	/**
 	 * determines whether two rectangeles are intersecting
+	 * 
 	 * @param r1
 	 * @param r2
 	 * @return boolean
 	 */
 	public boolean intersecting(Rect r1, Rect r2) {
-		return (r1.x >= r2.x && r1.x + r1.width >= r2.x + r2.width &&
-				r1.y >= r2.y && r1.y + r1.height <= r2.y + r2.height);
+		return (r1.x >= r2.x && r1.x + r1.width <= r2.x + r2.width && r1.y >= r2.y
+				&& r1.y + r1.height <= r2.y + r2.height);
 	}
-	
+
+	public boolean intersectingWithBoundary(Rect head) {
+		return (head.x < background.x || (head.x + head.width) > background.x + background.width
+				|| head.y < background.y || (head.y + head.height) > background.y + background.height);
+	}
+
+	/**
+	 * grow the snake when food eaten append new rectangle to tail in direction
+	 * moving
+	 */
 	public void grow() {
-		System.out.println("growing");
+		double newX = 0;
+		double newY = 0;
+
+		// add a tail
+		if (direction == Direction.RIGHT) {
+			newX = body[tail].x - bodyWidth;
+			newY = body[tail].y;
+		} else if (direction == Direction.LEFT) {
+			newX = body[tail].x + bodyWidth;
+			newY = body[tail].y;
+		} else if (direction == Direction.UP) {
+			newX = body[tail].x;
+			newY = body[tail].y + bodyHeight;
+		} else if (direction == Direction.DOWN) {
+			newX = body[tail].x;
+			newY = body[tail].y - bodyHeight;
+		}
+
+		Rect newBodyPiece = new Rect(newX, newY, bodyWidth, bodyHeight);
+
+		tail = (tail - 1) % body.length;
+		body[tail] = newBodyPiece;
 	}
-	
+
 	// changes snake direction
 	public void changeDirection(Direction newDirection) {
 		// check user input; make sure they don't run into themselves
@@ -141,7 +178,7 @@ public class Snake {
 
 			// 3 pixel gap between the body pieces
 			double subWidth = (piece.width - 6.0) / 2.0;
-			double subHeight = (piece.height - 6.0) / 2;
+			double subHeight = (piece.height - 6.0) / 2.0;
 
 			// color of snake
 			g2.setColor(Color.WHITE);

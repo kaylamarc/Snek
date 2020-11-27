@@ -1,6 +1,7 @@
 
 public class Rect {
 	double x, y, width, height;
+//	public Direction direction;
 	
 	/**
 	 * rectangle object
