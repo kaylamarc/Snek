@@ -14,10 +14,10 @@ public class GameScene extends Scene {
 	public Rect background, foreground;
 	Snake snake;
 	KL keyListener;
-	
+
 	public Food food;
 
-	public GameScene(KL keyListener) {
+	public GameScene(KL keyListener, SoundHandler sounds) {
 		background = new Rect(0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
 		foreground = new Rect(24, 48, Constants.TILE_WIDTH * 31, Constants.TILE_WIDTH * 22);
 		snake = new Snake(1, 48, 48 + 24, 24, 24, foreground);
@@ -32,7 +32,6 @@ public class GameScene extends Scene {
 	public void update(double dt) {
 		if (keyListener.isKeyPressed(KeyEvent.VK_UP)) {
 			snake.changeDirection(Direction.UP);
-			;
 		} else if (keyListener.isKeyPressed(KeyEvent.VK_DOWN)) {
 			snake.changeDirection(Direction.DOWN);
 		} else if (keyListener.isKeyPressed(KeyEvent.VK_RIGHT)) {
@@ -40,11 +39,17 @@ public class GameScene extends Scene {
 		} else if (keyListener.isKeyPressed(KeyEvent.VK_LEFT)) {
 			snake.changeDirection(Direction.LEFT);
 		}
-		
-		if(!food.isSpawned) food.spawn();
-		
+
+		if (!food.isSpawned)
+			food.spawn();
+
 		food.update(dt);
 		snake.update(dt);
+
+		// game won
+		if (snake.size == 100) {
+			Window.getWindow().changeState(2);
+		}
 	}
 
 	public void draw(Graphics g) {

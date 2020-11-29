@@ -17,7 +17,9 @@ public class Snake {
 
 	public double ogWaitBtwnUpdates = 0.3f; // how long it waits before each piece moves
 	public double waitTimeLeft = ogWaitBtwnUpdates; // how much time before moving again
-	
+
+	private static SoundHandler sounds;
+
 	public Color[] bodyColor = new Color[100]; // keeps track of body piece colors
 
 	public Snake(int size, double startX, double startY, double bodyWidth, double bodyHeight, Rect background) {
@@ -26,6 +28,8 @@ public class Snake {
 		this.bodyHeight = bodyHeight;
 		this.background = background;
 
+		sounds = new SoundHandler();
+
 		// create each body piece
 		for (int i = 0; i <= size; i++) {
 			Rect bodyPiece = new Rect(startX + i * bodyWidth, startY, bodyWidth, bodyHeight);
@@ -33,7 +37,7 @@ public class Snake {
 			head++;
 		}
 		head--;
-		
+
 		for (int i = 0; i < 100; i++) {
 			bodyColor[i] = Color.WHITE;
 		}
@@ -54,6 +58,8 @@ public class Snake {
 		// if intersect with self return to main window
 		if (intersectingWithSelf()) {
 			Window.getWindow().changeState(0);
+			sounds.playGameOver();
+
 		}
 
 		waitTimeLeft = ogWaitBtwnUpdates;
@@ -133,7 +139,9 @@ public class Snake {
 	 * moving
 	 */
 	public void grow(Color color) {
+		sounds.playNom();
 		size++;
+
 		double newX = 0;
 		double newY = 0;
 
@@ -155,7 +163,12 @@ public class Snake {
 		Rect newBodyPiece = new Rect(newX, newY, bodyWidth, bodyHeight);
 
 		tail = (tail - 1) % body.length;
-		bodyColor[size-1] = color;
+		bodyColor[size - 1] = color;
+
+		if (tail < 0) {
+			tail = 0;
+		}
+
 		body[tail] = newBodyPiece;
 	}
 
@@ -181,9 +194,9 @@ public class Snake {
 	public void draw(Graphics2D g2) {
 
 		// get the wrap around effect of snake
-		for (int i = tail, ci = size-1; i != head; i = (i + 1) % body.length, ci--) {
+		for (int i = tail, ci = size - 1; i != head; i = (i + 1) % body.length, ci--) {
 			Rect piece = body[i];
-			
+
 			// 3 pixel gap between the body pieces
 			double subWidth = (piece.width - 6.0) / 2.0;
 			double subHeight = (piece.height - 6.0) / 2.0;

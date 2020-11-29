@@ -13,6 +13,8 @@ public class Food {
 	public int xPadding; // center food within one of grid tiles
 	
 	public boolean isSpawned = false;
+	
+	private static SoundHandler sounds;
 
 	public Food(Rect background, Snake snake, int width, int height, Color color) {
 		this.background = background;
@@ -21,6 +23,8 @@ public class Food {
 		this.height = height;
 		this.color = color;
 		this.rect = new Rect(0, 0, width, height);
+		
+		sounds = new SoundHandler();
 		
 		xPadding = (int)((Constants.TILE_WIDTH - this.width) / 2.0);
 	}

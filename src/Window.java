@@ -10,6 +10,8 @@ public class Window extends JFrame implements Runnable {
 
 	public KL keyListener = new KL();
 	public ML mouseListener = new ML();
+	
+	private static SoundHandler sounds;
 
 	public Window(int width, int height, String title) {
 		setSize(width, height);
@@ -20,7 +22,9 @@ public class Window extends JFrame implements Runnable {
 		addKeyListener(keyListener);
 		addMouseListener(mouseListener);
 		addMouseMotionListener(mouseListener);
-
+		
+		sounds = new SoundHandler();
+		
 		isRunning = true;
 
 		// Start in menu state
@@ -50,10 +54,13 @@ public class Window extends JFrame implements Runnable {
 		currentState = newState;
 		switch (currentState) {
 		case 0:
-			currentScene = new MenuScene(keyListener, mouseListener);
+			currentScene = new MenuScene(keyListener, mouseListener, sounds);
 			break;
 		case 1:
-			currentScene = new GameScene(keyListener);
+			currentScene = new GameScene(keyListener, sounds);
+			break;
+		case 2:
+			currentScene = new VictoryScene(keyListener, mouseListener, sounds);
 			break;
 		default:
 			System.out.println("Unknown scene.");
