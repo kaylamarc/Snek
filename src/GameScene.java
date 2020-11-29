@@ -1,5 +1,4 @@
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
@@ -12,12 +11,12 @@ import java.awt.geom.Rectangle2D;
  */
 public class GameScene extends Scene {
 	public Rect background, foreground;
-	Snake snake;
-	KL keyListener;
+	public Snake snake;
+	public KL keyListener;
 
 	public Food food;
 
-	public GameScene(KL keyListener, SoundHandler sounds) {
+	public GameScene(KL keyListener) {
 		background = new Rect(0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
 		foreground = new Rect(24, 48, Constants.TILE_WIDTH * 31, Constants.TILE_WIDTH * 22);
 		snake = new Snake(1, 48, 48 + 24, 24, 24, foreground);
@@ -52,9 +51,7 @@ public class GameScene extends Scene {
 		}
 	}
 
-	public void draw(Graphics g) {
-		Graphics2D g2 = (Graphics2D) g;
-
+	public void draw(Graphics2D g2) {
 		// set up and display border
 		g2.setColor(Color.DARK_GRAY);
 		g2.fill(new Rectangle2D.Double(background.x, background.y, background.width, background.height));

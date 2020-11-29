@@ -2,7 +2,8 @@ import javax.swing.JFrame;
 import java.awt.*;
 
 public class Window extends JFrame implements Runnable {
-	public static Window window = null;
+	private static final long serialVersionUID = -9009703283008405219L;
+	private static Window window = null;
 	public boolean isRunning;
 
 	public int currentState;
@@ -11,7 +12,7 @@ public class Window extends JFrame implements Runnable {
 	public KL keyListener = new KL();
 	public ML mouseListener = new ML();
 	
-	private static SoundHandler sounds;
+	public SoundHandler sounds;
 
 	public Window(int width, int height, String title) {
 		setSize(width, height);
@@ -54,13 +55,13 @@ public class Window extends JFrame implements Runnable {
 		currentState = newState;
 		switch (currentState) {
 		case 0:
-			currentScene = new MenuScene(keyListener, mouseListener, sounds);
+			currentScene = new MenuScene(keyListener, mouseListener);
 			break;
 		case 1:
-			currentScene = new GameScene(keyListener, sounds);
+			currentScene = new GameScene(keyListener);
 			break;
 		case 2:
-			currentScene = new VictoryScene(keyListener, mouseListener, sounds);
+			currentScene = new VictoryScene(keyListener, mouseListener);
 			break;
 		default:
 			System.out.println("Unknown scene.");
@@ -90,7 +91,7 @@ public class Window extends JFrame implements Runnable {
 	 */
 	public void draw(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		currentScene.draw(g);
+		currentScene.draw(g2);
 	}
 
 	/**

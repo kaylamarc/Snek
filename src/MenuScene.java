@@ -1,7 +1,5 @@
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseListener;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
@@ -22,12 +20,9 @@ public class MenuScene extends Scene {
 
 	public BufferedImage playCurrentImage, exitCurrentImage;
 	
-	private static SoundHandler sounds;
-
-	public MenuScene(KL keyListener, ML mouseListener, SoundHandler sounds) {
+	public MenuScene(KL keyListener, ML mouseListener) {
 		this.keyListener = keyListener;
 		this.mouseListener = mouseListener;
-		this.sounds = sounds;
 		
 		// get menu sprites from sprite sheet
 		try {
@@ -58,7 +53,7 @@ public class MenuScene extends Scene {
 			
 			if(mouseListener.isPressed()) {
 				Window.getWindow().changeState(1);
-				sounds.playBegin();
+				Window.getWindow().sounds.playBegin();
 			}
 		} else {
 			playCurrentImage = play;
@@ -75,15 +70,13 @@ public class MenuScene extends Scene {
 		}
 	}
 
-	public void draw(Graphics g) {
+	public void draw(Graphics2D g) {
 		g.setColor(Color.GREEN);
 		g.fillRect(0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
 
 		g.drawImage(title, (int) titleRect.x, (int) titleRect.y, (int) titleRect.width, (int) titleRect.height, null);
-		g.drawImage(playCurrentImage, (int) playRect.x, (int) playRect.y, (int) playRect.width, (int) playRect.height,
-				null);
-		g.drawImage(exitCurrentImage, (int) exitRect.x, (int) exitRect.y, (int) exitRect.width, (int) exitRect.height,
-				null);
+		g.drawImage(playCurrentImage, (int) playRect.x, (int) playRect.y, (int) playRect.width, (int) playRect.height, null);
+		g.drawImage(exitCurrentImage, (int) exitRect.x, (int) exitRect.y, (int) exitRect.width, (int) exitRect.height, null);
 	}
 
 }

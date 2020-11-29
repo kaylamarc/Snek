@@ -1,5 +1,5 @@
 import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -16,13 +16,10 @@ public class VictoryScene extends Scene {
 
 	public Rect playRect, exitRect, victRect;
 
-	public static SoundHandler sounds;
-
-	public VictoryScene(KL keyListener, ML mouseListener, SoundHandler sounds) {
+	public VictoryScene(KL keyListener, ML mouseListener) {
 
 		this.keyListener = keyListener;
 		this.mouseListener = mouseListener;
-		this.sounds = sounds;
 
 		try {
 			BufferedImage spritesheet = ImageIO.read(new File("assets/menuSpriteSnek.png"));
@@ -42,7 +39,7 @@ public class VictoryScene extends Scene {
 		victRect = new Rect(240, 40, 300, 100);
 	}
 
-	public void draw(Graphics g) {
+	public void draw(Graphics2D g) {
 		g.setColor(Color.YELLOW);
 		g.fillRect(0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
 
@@ -59,7 +56,7 @@ public class VictoryScene extends Scene {
 
 			if (mouseListener.isPressed()) {
 				Window.getWindow().changeState(1);
-				sounds.playBegin();
+				Window.getWindow().sounds.playBegin();
 			}
 		} else {
 			playCurrentImage = play;

@@ -18,8 +18,6 @@ public class Snake {
 	public double ogWaitBtwnUpdates = 0.3f; // how long it waits before each piece moves
 	public double waitTimeLeft = ogWaitBtwnUpdates; // how much time before moving again
 
-	private static SoundHandler sounds;
-
 	public Color[] bodyColor = new Color[100]; // keeps track of body piece colors
 
 	public Snake(int size, double startX, double startY, double bodyWidth, double bodyHeight, Rect background) {
@@ -27,8 +25,6 @@ public class Snake {
 		this.bodyWidth = bodyWidth;
 		this.bodyHeight = bodyHeight;
 		this.background = background;
-
-		sounds = new SoundHandler();
 
 		// create each body piece
 		for (int i = 0; i <= size; i++) {
@@ -58,7 +54,7 @@ public class Snake {
 		// if intersect with self return to main window
 		if (intersectingWithSelf()) {
 			Window.getWindow().changeState(0);
-			sounds.playGameOver();
+			Window.getWindow().sounds.playGameOver();
 
 		}
 
@@ -139,7 +135,7 @@ public class Snake {
 	 * moving
 	 */
 	public void grow(Color color) {
-		sounds.playNom();
+		Window.getWindow().sounds.playNom();
 		size++;
 
 		double newX = 0;
