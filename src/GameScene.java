@@ -46,7 +46,7 @@ public class GameScene extends Scene {
 		snake.update(dt);
 
 		// game won
-		if (snake.size == 2) {
+		if (snake.size == 100) {
 			Window.getWindow().sounds.playVictory();
 			Window.getWindow().changeState(2);
 		}
